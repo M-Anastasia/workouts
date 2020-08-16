@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
 
+@Entity
 @Table(name = "workout")
 @Data
 public class Workout {

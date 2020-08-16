@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.UUID;
 
+@Entity
 @Table(name = "contraindication")
 @Data
 public class Contraindication {

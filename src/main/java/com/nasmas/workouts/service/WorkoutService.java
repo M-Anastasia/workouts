@@ -39,7 +39,6 @@ public class WorkoutService {
 
     // 3 удаление тренировки
     public void deleteWorkout(UUID uuid) {
-        workoutRepository.deleteByUuid(uuid);
     }
 
     // 4 обновление тренировки
