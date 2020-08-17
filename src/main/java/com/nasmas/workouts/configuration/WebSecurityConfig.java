@@ -34,12 +34,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/resources/**",
                         "/registration",
                         "/index",
+                        "/successful_registration",
                         "/",
                         "/css/**",
                         "/images/**",
                         "/js/**",
                         "/fonts/**",
                         "/vendor/**",
+                        "/styles/**",
+                        "/scripts/**",
                         "/src/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

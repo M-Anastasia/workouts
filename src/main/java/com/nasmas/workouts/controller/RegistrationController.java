@@ -1,8 +1,12 @@
 package com.nasmas.workouts.controller;
 
+import com.nasmas.workouts.model.MuscleGroup;
 import com.nasmas.workouts.model.Users;
+import com.nasmas.workouts.model.WorkoutType;
+import com.nasmas.workouts.service.MuscleGroupService;
 import com.nasmas.workouts.service.SecurityService;
 import com.nasmas.workouts.service.UsersService;
+import com.nasmas.workouts.service.WorkoutTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,12 +14,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class RegistrationController {
@@ -23,10 +27,14 @@ public class RegistrationController {
     @Autowired
     private UsersService userService;
     @Autowired
+    private WorkoutTypeService workoutTypeService;
+    @Autowired
+    private MuscleGroupService muscleGroupService;
+    @Autowired
     private SecurityService securityService;
 
     @GetMapping("/login")
-    public String registration(Model model) {
+    public String login(Model model) {
         return "login";
     }
 
@@ -35,28 +43,40 @@ public class RegistrationController {
         return "registration";
     }
 
+    @GetMapping("/successful_registration")
+    public String registrationSuccess(ModelMap model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        model.addAttribute("username", userDetails.getUsername());
+        return "successful_registration";
+    }
+
     @PostMapping("/registration")
-    public String registration(Users userForm) {
-        if (userForm != null && userForm.getPassword() != null && userForm.getPasswordConfirm() != null) {
-            if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
-                return "registration";
-            }
-        }
+    public RedirectView registration(Users userForm, RedirectAttributes redirectAttributes) {
+        userForm.setPassword(userService.getSaltString());
+        userForm.setPasswordConfirm(userForm.getPassword());
         userService.saveUser(userForm);
-
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/index";
+        RedirectView redirectView = new RedirectView();
+        redirectView.setContextRelative(true);
+        redirectView.setUrl("successful_registration");
+        redirectAttributes.addFlashAttribute("password", userForm.getPasswordConfirm());
+        return redirectView;
     }
 
     @GetMapping({"/", "/index"})
     public String welcome(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-        if (userDetails != null) {
+        List<WorkoutType> workoutTypes = workoutTypeService.getWorkoutTypeList();
+        List<MuscleGroup> muscleGroups = muscleGroupService.getMuscleGroupList();
+
+        if (!auth.getPrincipal().equals("anonymousUser")) {
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
             Users user = userService.findByName(userDetails.getUsername());
             model.addAttribute("username", user.getName());
+            model.addAttribute("workoutTypes", workoutTypes);
+            model.addAttribute("muscleGroups", muscleGroups);
         }
         return "index";
     }

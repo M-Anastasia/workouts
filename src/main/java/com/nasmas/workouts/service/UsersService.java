@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UsersService implements UserDetailsService {
@@ -81,5 +78,18 @@ public class UsersService implements UserDetailsService {
     public List<Users> usergtList(Long idMin) {
         return entityManager.createQuery("SELECT u FROM Users u WHERE u.uniqueId > :paramId", Users.class)
                 .setParameter("paramId", idMin).getResultList();
+    }
+
+    public String getSaltString() {
+        String saltChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 8) {
+            int index = (int) (rnd.nextFloat() * saltChars.length());
+            salt.append(saltChars.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
     }
 }
