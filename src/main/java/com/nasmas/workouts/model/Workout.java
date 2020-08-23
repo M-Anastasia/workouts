@@ -1,17 +1,24 @@
 package com.nasmas.workouts.model;
 
+import com.nasmas.workouts.model.local.WorkoutLocal;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "workout")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Workout {
 
     @Id
@@ -28,24 +35,22 @@ public class Workout {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "muscle_group_id")
-    @Fetch(FetchMode.JOIN)
-    private Set<MuscleGroup> muscleGroup;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contraindication_id")
-    @Fetch(FetchMode.JOIN)
-    private Set<Contraindication> contraindication;
+    @ManyToMany
+    @JoinTable(
+            name = "workouts",
+            joinColumns = @JoinColumn(name = "muscle_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_id"))
+    private List<MuscleGroup> muscleGroups;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workout_type_id")
     @Fetch(FetchMode.JOIN)
     private WorkoutType workoutType;
 
-    @Column(name = "video_link")
+    @Column(name = "video_link", unique = true)
     private String videoLink;
 
+    @CreationTimestamp
     @Column(name = "created_time")
     private Timestamp createdTime;
 
@@ -54,6 +59,7 @@ public class Workout {
     @Fetch(FetchMode.JOIN)
     private Users creator;
 
+    @UpdateTimestamp
     @Column(name = "modified_time")
     private Timestamp modifiedTime;
 
@@ -61,4 +67,13 @@ public class Workout {
     @JoinColumn(name = "modifier")
     @Fetch(FetchMode.JOIN)
     private Users modifier;
+
+    public Workout(WorkoutLocal workoutLocal, WorkoutType workoutType, List<MuscleGroup> muscleGroups) {
+        setUuid(UUID.randomUUID());
+        setName(workoutLocal.getName());
+        setDescription(workoutLocal.getDescription());
+        setWorkoutType(workoutType);
+        setMuscleGroups(muscleGroups);
+        setVideoLink(workoutLocal.getVideoLink());
+    }
 }

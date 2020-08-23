@@ -2,11 +2,9 @@ package com.nasmas.workouts.controller;
 
 import com.nasmas.workouts.model.MuscleGroup;
 import com.nasmas.workouts.model.Users;
+import com.nasmas.workouts.model.Workout;
 import com.nasmas.workouts.model.WorkoutType;
-import com.nasmas.workouts.service.MuscleGroupService;
-import com.nasmas.workouts.service.SecurityService;
-import com.nasmas.workouts.service.UsersService;
-import com.nasmas.workouts.service.WorkoutTypeService;
+import com.nasmas.workouts.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +30,8 @@ public class RegistrationController {
     private MuscleGroupService muscleGroupService;
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    private WorkoutService workoutService;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -70,6 +70,7 @@ public class RegistrationController {
 
         List<WorkoutType> workoutTypes = workoutTypeService.getWorkoutTypeList();
         List<MuscleGroup> muscleGroups = muscleGroupService.getMuscleGroupList();
+        List<Workout> workouts = workoutService.getWorkoutsList();
 
         if (!auth.getPrincipal().equals("anonymousUser")) {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
@@ -77,6 +78,7 @@ public class RegistrationController {
             model.addAttribute("username", user.getName());
             model.addAttribute("workoutTypes", workoutTypes);
             model.addAttribute("muscleGroups", muscleGroups);
+            model.addAttribute("workoutPage", workouts);
         }
         return "index";
     }

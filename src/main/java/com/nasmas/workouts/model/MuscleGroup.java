@@ -3,6 +3,7 @@ package com.nasmas.workouts.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,4 +21,7 @@ public class MuscleGroup {
 
     @Column(name = "name")
     private String name;
+
+    @ManyToMany(mappedBy = "muscleGroups")
+    private List<Workout> workouts;
 }
