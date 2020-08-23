@@ -47,8 +47,11 @@ public class Workout {
     @Fetch(FetchMode.JOIN)
     private WorkoutType workoutType;
 
-    @Column(name = "video_link", unique = true)
+    @Column(name = "video_link")
     private String videoLink;
+
+    @Column(name = "is_private")
+    private Boolean isPrivate;
 
     @CreationTimestamp
     @Column(name = "created_time")
@@ -59,21 +62,18 @@ public class Workout {
     @Fetch(FetchMode.JOIN)
     private Users creator;
 
-    @UpdateTimestamp
-    @Column(name = "modified_time")
-    private Timestamp modifiedTime;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "modifier")
-    @Fetch(FetchMode.JOIN)
-    private Users modifier;
-
-    public Workout(WorkoutLocal workoutLocal, WorkoutType workoutType, List<MuscleGroup> muscleGroups) {
+    public Workout(WorkoutLocal workoutLocal, WorkoutType workoutType, List<MuscleGroup> muscleGroups, Users user) {
         setUuid(UUID.randomUUID());
         setName(workoutLocal.getName());
         setDescription(workoutLocal.getDescription());
         setWorkoutType(workoutType);
         setMuscleGroups(muscleGroups);
         setVideoLink(workoutLocal.getVideoLink());
+        if (workoutLocal.getIsPrivate() == null) {
+            setIsPrivate(false);
+        } else {
+            setIsPrivate(workoutLocal.getIsPrivate());
+        }
+        setCreator(user);
     }
 }

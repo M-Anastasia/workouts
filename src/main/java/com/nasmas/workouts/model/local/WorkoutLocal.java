@@ -16,4 +16,5 @@ public class WorkoutLocal {
     private Set<String> muscleGroup;
     private String workoutType;
     private String videoLink;
+    private Boolean isPrivate;
 }

@@ -48,7 +48,7 @@ public class UsersService implements UserDetailsService {
     }
 
     public Users findByName(String name) {
-        return usersRepository.findByName(name);
+        return usersRepository.getByName(name);
     }
 
     public List<Users> allUsers() {

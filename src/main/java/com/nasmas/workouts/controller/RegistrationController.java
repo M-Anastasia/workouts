@@ -25,13 +25,9 @@ public class RegistrationController {
     @Autowired
     private UsersService userService;
     @Autowired
-    private WorkoutTypeService workoutTypeService;
-    @Autowired
-    private MuscleGroupService muscleGroupService;
-    @Autowired
     private SecurityService securityService;
     @Autowired
-    private WorkoutService workoutService;
+    private UtilService utilService;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -66,20 +62,7 @@ public class RegistrationController {
 
     @GetMapping({"/", "/index"})
     public String welcome(ModelMap model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        List<WorkoutType> workoutTypes = workoutTypeService.getWorkoutTypeList();
-        List<MuscleGroup> muscleGroups = muscleGroupService.getMuscleGroupList();
-        List<Workout> workouts = workoutService.getWorkoutsList();
-
-        if (!auth.getPrincipal().equals("anonymousUser")) {
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            Users user = userService.findByName(userDetails.getUsername());
-            model.addAttribute("username", user.getName());
-            model.addAttribute("workoutTypes", workoutTypes);
-            model.addAttribute("muscleGroups", muscleGroups);
-            model.addAttribute("workoutPage", workouts);
-        }
+        model = utilService.getBaseModel(model);
         return "index";
     }
 }
