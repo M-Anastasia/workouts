@@ -18,15 +18,15 @@
     <!-- load stylesheets -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">
     <!-- Google web font "Open Sans" -->
-    <link rel="stylesheet" href="../font-awesome-4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Bootstrap style -->
-    <link rel="stylesheet" href="../css/hero-slider-style.css">
+    <link rel="stylesheet" href="css/hero-slider-style.css">
     <!-- Hero slider style (https://codyhouse.co/gem/hero-slider/) -->
-    <link rel="stylesheet" href="../css/magnific-popup.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
     <!-- Magnific popup style (http://dimsemenov.com/plugins/magnific-popup/) -->
-    <link rel="stylesheet" href="../css/tooplate-style.css">
+    <link rel="stylesheet" href="css/tooplate-style.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,37 +40,55 @@
 
 <!-- Content -->
 <div class="cd-hero">
+
     <div th:replace="menu :: menu"></div>
+    <!-- Navigation -->
 
     <ul class="cd-hero-slider">
 
+        <!-- Page 1 Gallery One -->
         <li class="selected">
             <div class="cd-full-width">
-                <div class="container-fluid js-tm-page-content tm-page-width tm-pad-b">
-                    <div class="row tm-white-box-margin-b">
-                        <div class="col-xs-12">
-                            <div class="tm-flex1">
-                                <div class="tm-bg-white-translucent text-xs-left tm-textbox tm-2-col-textbox-2 tm-textbox-padding tm-textbox-padding-contact">
-                                    <h2 class="tm-text-title" th:text="${workout.getName()}"></h2>
-                                    <p class="tm-text" th:text="${workout.getCreator().getName()}"></p>
-                                    <iframe width="560" height="315" th:src="${workout.getVideoLink()}"
-                                            frameborder="0" allow="accelerometer; autoplay; encrypted-media;
-                                            gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                    <p class="tm-text" th:text="${workout.getDescription()}"></p>
-                                    <div th:if="${workout.getIsPrivate()}">
-                                        <img src="../images/icons/locked.png" class="tm-social-link">
-                                    </div>
-                                    <div th:if="${!workout.getIsPrivate()}">
-                                        <img src="../images/icons/unlocked.png" class="tm-social-link">
-                                    </div>
-                                </div>
+                <div class="container-fluid js-tm-page-content" data-page-no="1" data-page-type="gallery">
+                    <div class="tm-img-gallery-container">
+                        <div class="tm-img-gallery gallery-one">
+                            <!-- Gallery One pop up connected with JS code below -->
+                            <div th:each="workout : ${workoutPage}" class="grid-item">
+
+                                <!--                                <form id="openWorkout" method="GET" th:action="'/workout/'+${workout.getUuid()}">-->
+
+                                <figure class="effect-bubba">
+                                    <!--                                    <a href="http://tumblr.com" target="_blank" class="linkwrap">-->
+                                    <!--                                        <div class="blocker"></div>-->
+                                    <iframe width="320" height="314" th:src="${workout.getVideoLink()}"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen></iframe>
+                                    <!--                                    </a>-->
+                                </figure>
+                                <!--                                </form>-->
+                                <a th:href="'/workout/'+${workout.getUuid()}">
+                                    <input type="text" th:placeholder="${workout.getName()}" readonly>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </li>
+
     </ul> <!-- .cd-hero-slider -->
+
+    <footer class="tm-footer">
+
+        <div class="tm-social-icons-container text-xs-center">
+            <nav class="pagination">
+                <a th:if="${workoutPage.totalPages > 0}" class="tm-social-link"
+                   th:href="@{/(size=${workoutPage.size}, page=${pageNumber})}"
+                   th:text="${pageNumber}" th:each="pageNumber : ${pageNumbers}"></a>
+            </nav>
+        </div>
+    </footer>
 
 </div> <!-- .cd-hero -->
 
@@ -85,17 +103,18 @@
 </div>
 
 <!-- load JS files -->
-<script src="../js/jquery-1.11.3.min.js"></script>         <!-- jQuery (https://jquery.com/download/) -->
+<script src="js/jquery-1.11.3.min.js"></script>         <!-- jQuery (https://jquery.com/download/) -->
 <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>
 <!-- Tether for Bootstrap (http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h) -->
-<script src="../js/bootstrap.min.js"></script>             <!-- Bootstrap js (v4-alpha.getbootstrap.com/) -->
-<script src="../js/hero-slider-main.js"></script>          <!-- Hero slider (https://codyhouse.co/gem/hero-slider/) -->
-<script src="../js/jquery.magnific-popup.min.js"></script>
+<script src="js/bootstrap.min.js"></script>             <!-- Bootstrap js (v4-alpha.getbootstrap.com/) -->
+<script src="js/hero-slider-main.js"></script>          <!-- Hero slider (https://codyhouse.co/gem/hero-slider/) -->
+<script src="js/jquery.magnific-popup.min.js"></script>
 <!-- Magnific popup (http://dimsemenov.com/plugins/magnific-popup/) -->
 
 <script>
 
     function adjustHeightOfPage(pageNo) {
+
         var offset = 80;
         var pageContentHeight = 0;
 
@@ -135,13 +154,6 @@
 
         adjustHeightOfPage(1); // Adjust page height
 
-        /* Gallery One pop up
-        -----------------------------------------*/
-        $('.gallery-one').magnificPopup({
-            delegate: 'a', // child items selector, by clicking on it popup will open
-            type: 'image',
-            gallery: {enabled: true}
-        });
 
         /* Gallery Two pop up
         -----------------------------------------*/

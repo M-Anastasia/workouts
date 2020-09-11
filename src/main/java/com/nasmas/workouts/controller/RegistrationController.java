@@ -14,10 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class RegistrationController {
@@ -61,8 +63,16 @@ public class RegistrationController {
     }
 
     @GetMapping({"/", "/index"})
-    public String welcome(ModelMap model) {
-        model = utilService.getBaseModel(model);
-        return "index";
+    public String welcome(ModelMap model, @RequestParam("page") Optional<Integer> page, @RequestParam("size")
+            Optional<Integer> size) {
+        model = utilService.getBaseModel(model, page, size);
+        return "main";
+    }
+
+    @GetMapping("/profile")
+    public String profile(ModelMap model, @RequestParam("page") Optional<Integer> page, @RequestParam("size")
+            Optional<Integer> size) {
+        model = utilService.getBaseModel(model, page, size);
+        return "profile";
     }
 }

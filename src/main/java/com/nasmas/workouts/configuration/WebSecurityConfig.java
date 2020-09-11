@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 @Configuration
@@ -21,8 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public MessageDigestPasswordEncoder bCryptPasswordEncoder() {
+        return new MessageDigestPasswordEncoder("MD5");
     }
 
     @Override
@@ -38,12 +39,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/",
                         "/css/**",
                         "/images/**",
+                        "/img/**",
                         "/js/**",
                         "/fonts/**",
+                        "/font-awesome-4.5.0/**",
                         "/vendor/**",
                         "/styles/**",
                         "/scripts/**",
-                        "/src/**").permitAll()
+                        "/src/**",
+                        "/about").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

@@ -410,6 +410,7 @@ border-top-color: #f9c922; /* Chrome, Opera 15+, Safari 5+ */ animation: spin 1.
 
 .tm-img-gallery {
 	margin: 0 auto 40px;
+	display: inline-block;
 }
 
 @media (min-width: 480px) {
@@ -725,6 +726,14 @@ figure.effect-bubba:hover p {
 	.tm-flex { 
 		display: -ms-flexbox; 
 		display: flex;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+
+	.tm-flex1 {
+		display: -ms-flexbox;
+		display: flex;
+		padding-top: 30px;
 	}
 
 	.tm-2-col-textbox-2 {	

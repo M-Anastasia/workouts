@@ -18,15 +18,15 @@
     <!-- load stylesheets -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">
     <!-- Google web font "Open Sans" -->
-    <link rel="stylesheet" href="../font-awesome-4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Bootstrap style -->
-    <link rel="stylesheet" href="../css/hero-slider-style.css">
+    <link rel="stylesheet" href="css/hero-slider-style.css">
     <!-- Hero slider style (https://codyhouse.co/gem/hero-slider/) -->
-    <link rel="stylesheet" href="../css/magnific-popup.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
     <!-- Magnific popup style (http://dimsemenov.com/plugins/magnific-popup/) -->
-    <link rel="stylesheet" href="../css/tooplate-style.css">
+    <link rel="stylesheet" href="css/tooplate-style.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,36 +40,30 @@
 
 <!-- Content -->
 <div class="cd-hero">
+
+    <!-- Navigation -->
     <div th:replace="menu :: menu"></div>
 
     <ul class="cd-hero-slider">
 
         <li class="selected">
             <div class="cd-full-width">
-                <div class="container-fluid js-tm-page-content tm-page-width tm-pad-b">
+                <div class="container-fluid js-tm-page-content tm-page-width tm-pad-b" data-page-no="4">
                     <div class="row tm-white-box-margin-b">
                         <div class="col-xs-12">
-                            <div class="tm-flex1">
-                                <div class="tm-bg-white-translucent text-xs-left tm-textbox tm-2-col-textbox-2 tm-textbox-padding tm-textbox-padding-contact">
-                                    <h2 class="tm-text-title" th:text="${workout.getName()}"></h2>
-                                    <p class="tm-text" th:text="${workout.getCreator().getName()}"></p>
-                                    <iframe width="560" height="315" th:src="${workout.getVideoLink()}"
-                                            frameborder="0" allow="accelerometer; autoplay; encrypted-media;
-                                            gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                    <p class="tm-text" th:text="${workout.getDescription()}"></p>
-                                    <div th:if="${workout.getIsPrivate()}">
-                                        <img src="../images/icons/locked.png" class="tm-social-link">
-                                    </div>
-                                    <div th:if="${!workout.getIsPrivate()}">
-                                        <img src="../images/icons/unlocked.png" class="tm-social-link">
-                                    </div>
+                            <div class="tm-flex">
+                                <div class="tm-bg-white-translucent text-xs-left tm-textbox tm-textbox-padding">
+                                    <h2 class="tm-text-title">About our service</h2>
+                                    <p class="tm-text" th:text="${about}"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> <!-- .cd-full-width -->
+
         </li>
+
     </ul> <!-- .cd-hero-slider -->
 
 </div> <!-- .cd-hero -->
@@ -85,33 +79,30 @@
 </div>
 
 <!-- load JS files -->
-<script src="../js/jquery-1.11.3.min.js"></script>         <!-- jQuery (https://jquery.com/download/) -->
-<script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>
-<!-- Tether for Bootstrap (http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h) -->
-<script src="../js/bootstrap.min.js"></script>             <!-- Bootstrap js (v4-alpha.getbootstrap.com/) -->
-<script src="../js/hero-slider-main.js"></script>          <!-- Hero slider (https://codyhouse.co/gem/hero-slider/) -->
-<script src="../js/jquery.magnific-popup.min.js"></script>
-<!-- Magnific popup (http://dimsemenov.com/plugins/magnific-popup/) -->
+<script src="js/jquery-1.11.3.min.js"></script>         <!-- jQuery (https://jquery.com/download/) -->
+<script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script> <!-- Tether for Bootstrap (http://stackoverflow.com/questions/34567939/how-to-fix-the-error-error-bootstrap-tooltips-require-tether-http-github-h) -->
+<script src="js/bootstrap.min.js"></script>             <!-- Bootstrap js (v4-alpha.getbootstrap.com/) -->
+<script src="js/hero-slider-main.js"></script>          <!-- Hero slider (https://codyhouse.co/gem/hero-slider/) -->
+<script src="js/jquery.magnific-popup.min.js"></script> <!-- Magnific popup (http://dimsemenov.com/plugins/magnific-popup/) -->
 
 <script>
 
     function adjustHeightOfPage(pageNo) {
+
         var offset = 80;
         var pageContentHeight = 0;
 
         var pageType = $('div[data-page-no="' + pageNo + '"]').data("page-type");
 
-        if (pageType != undefined && pageType == "gallery") {
+        if( pageType != undefined && pageType == "gallery") {
             pageContentHeight = $(".cd-hero-slider li:nth-of-type(" + pageNo + ") .tm-img-gallery-container").height();
-        } else {
+        }
+        else {
             pageContentHeight = $(".cd-hero-slider li:nth-of-type(" + pageNo + ") .js-tm-page-content").height() + 20;
         }
 
-        if ($(window).width() >= 992) {
-            offset = 120;
-        } else if ($(window).width() < 480) {
-            offset = 40;
-        }
+        if($(window).width() >= 992) { offset = 120; }
+        else if($(window).width() < 480) { offset = 40; }
 
         // Get the page height
         var totalPageHeight = $('.cd-slider-nav').height()
@@ -119,10 +110,13 @@
             + $('.tm-footer').height();
 
         // Adjust layout based on page height and window height
-        if (totalPageHeight > $(window).height()) {
+        if(totalPageHeight > $(window).height())
+        {
             $('.cd-hero-slider').addClass('small-screen');
             $('.cd-hero-slider li:nth-of-type(' + pageNo + ')').css("min-height", totalPageHeight + "px");
-        } else {
+        }
+        else
+        {
             $('.cd-hero-slider').removeClass('small-screen');
             $('.cd-hero-slider li:nth-of-type(' + pageNo + ')').css("min-height", "100%");
         }
@@ -131,7 +125,7 @@
     /*
         Everything is loaded including images.
     */
-    $(window).load(function () {
+    $(window).load(function(){
 
         adjustHeightOfPage(1); // Adjust page height
 
@@ -140,7 +134,7 @@
         $('.gallery-one').magnificPopup({
             delegate: 'a', // child items selector, by clicking on it popup will open
             type: 'image',
-            gallery: {enabled: true}
+            gallery:{enabled:true}
         });
 
         /* Gallery Two pop up
@@ -148,7 +142,7 @@
         $('.gallery-two').magnificPopup({
             delegate: 'a',
             type: 'image',
-            gallery: {enabled: true}
+            gallery:{enabled:true}
         });
 
         /* Gallery Three pop up
@@ -156,12 +150,12 @@
         $('.gallery-three').magnificPopup({
             delegate: 'a',
             type: 'image',
-            gallery: {enabled: true}
+            gallery:{enabled:true}
         });
 
         /* Collapse menu after click
         -----------------------------------------*/
-        $('#tmNavbar a').click(function () {
+        $('#tmNavbar a').click(function(){
             $('#tmNavbar').collapse('hide');
 
             adjustHeightOfPage($(this).data("no")); // Adjust page height
@@ -169,12 +163,12 @@
 
         /* Browser resized
         -----------------------------------------*/
-        $(window).resize(function () {
+        $( window ).resize(function() {
             var currentPageNo = $(".cd-hero-slider li.selected .js-tm-page-content").data("page-no");
 
             // wait 3 seconds
-            setTimeout(function () {
-                adjustHeightOfPage(currentPageNo);
+            setTimeout(function() {
+                adjustHeightOfPage( currentPageNo );
             }, 1000);
 
         });
@@ -182,6 +176,45 @@
         // Remove preloader (https://ihatetomatoes.net/create-custom-preloading-screen/)
         $('body').addClass('loaded');
 
+    });
+
+    /* Google map
+    ------------------------------------------------*/
+    var map = '';
+    var center;
+
+    function initialize() {
+        var mapOptions = {
+            zoom: 14,
+            center: new google.maps.LatLng(37.769725, -122.462154),
+            scrollwheel: false
+        };
+
+        map = new google.maps.Map(document.getElementById('google-map'),  mapOptions);
+
+        google.maps.event.addDomListener(map, 'idle', function() {
+            calculateCenter();
+        });
+
+        google.maps.event.addDomListener(window, 'resize', function() {
+            map.setCenter(center);
+        });
+    }
+
+    function calculateCenter() {
+        center = map.getCenter();
+    }
+
+    function loadGoogleMap(){
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' + 'callback=initialize';
+        document.body.appendChild(script);
+    }
+
+    // DOM is ready
+    $(function() {
+        loadGoogleMap(); // Google Map
     });
 
 </script>

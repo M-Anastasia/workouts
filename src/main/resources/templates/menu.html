@@ -1,0 +1,43 @@
+<header class="cd-slider-nav" th:fragment="menu">
+    <nav class="navbar">
+        <div class="tm-navbar-bg">
+
+            <a class="navbar-brand text-uppercase" th:href="@{/}"><i class="fa fa-gears tm-brand-icon"></i>Workouts</a>
+
+            <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse"
+                    data-target="#tmNavbar">
+                &#9776;
+            </button>
+            <div class="collapse navbar-toggleable-md text-xs-center text-uppercase tm-navbar" id="tmNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <form id="backToMain" method="GET" th:action="@{/}">
+                            <a class="nav-link" onclick="document.forms['backToMain'].submit()">Main</a>
+                        </form>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAnonymous()">
+                        <form id="toProfile" method="GET" th:action="@{/profile}">
+                            <a class="nav-link" onclick="document.forms['toProfile'].submit()">Your Profile</a>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form id="about" method="GET" th:action="@{/about}">
+                            <a class="nav-link" onclick="document.forms['about'].submit()">About</a>
+                        </form>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <form id="loginForm" method="GET" th:action="@{/login}">
+                            <a class="nav-link" onclick="document.forms['loginForm'].submit()">Log In as Coach</a>
+                        </form>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAnonymous()">
+                        <form id="logoutForm" method="POST" th:action="@{/logout}">
+                            <a class="nav-link" onclick="document.forms['logoutForm'].submit()">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+</header>

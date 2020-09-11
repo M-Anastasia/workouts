@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -25,7 +26,7 @@ public class UsersService implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private MessageDigestPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,12 +44,17 @@ public class UsersService implements UserDetailsService {
         return userFromDb.orElse(new Users());
     }
 
+    public Users findByUniqueId(Long uniqueId) {
+        return usersRepository.findByUniqueId(uniqueId);
+    }
+
     public Users findByUuid(UUID uuid) {
         return usersRepository.findByUuid(uuid);
     }
 
     public Users findByName(String name) {
-        return usersRepository.getByName(name);
+        return (Users) entityManager.createQuery("SELECT u FROM Users u WHERE u.name = '" + name + "'").getSingleResult();
+//        return (Users) entityManager.createQuery("SELECT * FROM public.users WHERE users.name = '" + name + "'").getSingleResult();
     }
 
     public List<Users> allUsers() {
@@ -84,7 +90,7 @@ public class UsersService implements UserDetailsService {
         String saltChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
-        while (salt.length() < 8) {
+        while (salt.length() < 6) {
             int index = (int) (rnd.nextFloat() * saltChars.length());
             salt.append(saltChars.charAt(index));
         }

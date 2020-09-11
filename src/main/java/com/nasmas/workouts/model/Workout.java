@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -32,14 +33,14 @@ public class Workout {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 2000)
     private String description;
 
     @ManyToMany
     @JoinTable(
             name = "workouts",
-            joinColumns = @JoinColumn(name = "muscle_group_id"),
-            inverseJoinColumns = @JoinColumn(name = "workout_id"))
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "muscle_group_id"))
     private List<MuscleGroup> muscleGroups;
 
     @OneToOne(fetch = FetchType.LAZY)
