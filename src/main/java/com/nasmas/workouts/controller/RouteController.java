@@ -1,7 +1,6 @@
 package com.nasmas.workouts.controller;
 
 import com.nasmas.workouts.service.UtilService;
-import com.sun.corba.se.impl.logging.UtilSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

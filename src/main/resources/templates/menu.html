@@ -25,6 +25,11 @@
                             <a class="nav-link" onclick="document.forms['about'].submit()">About</a>
                         </form>
                     </li>
+                    <li class="nav-item" sec:authorize="!isAnonymous()">
+                        <form id="chatForm" method="GET" th:action="@{/chat}">
+                            <a class="nav-link" onclick="document.forms['chatForm'].submit()">Chat</a>
+                        </form>
+                    </li>
                     <li class="nav-item" sec:authorize="isAnonymous()">
                         <form id="loginForm" method="GET" th:action="@{/login}">
                             <a class="nav-link" onclick="document.forms['loginForm'].submit()">Log In as Coach</a>

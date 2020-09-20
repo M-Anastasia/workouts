@@ -1,6 +1,5 @@
 package com.nasmas.workouts.configuration;
 
-import com.nasmas.workouts.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
@@ -47,7 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/styles/**",
                         "/scripts/**",
                         "/src/**",
-                        "/about").permitAll()
+                        "/about",
+                        "/workout/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -69,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SpringSecurityDialect springSecurityDialect(){
+    public SpringSecurityDialect springSecurityDialect() {
         return new SpringSecurityDialect();
     }
 }

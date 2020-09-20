@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,9 +56,7 @@ public class UtilService {
         if (!auth.getPrincipal().equals("anonymousUser")) {
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             Users user = userService.findByName(userDetails.getUsername());
-//            List<Workout> workoutsByCouch = workoutService.getWorkoutsList(user);
             model.addAttribute("couchId", user.getUniqueId());
-//            model.addAttribute("workoutsByCouch", workoutsByCouch);
             model.addAttribute("username", user.getName());
             model.addAttribute("workoutTypes", workoutTypes);
             model.addAttribute("muscleGroups", muscleGroups);

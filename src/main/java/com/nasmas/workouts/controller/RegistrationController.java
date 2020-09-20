@@ -1,10 +1,9 @@
 package com.nasmas.workouts.controller;
 
-import com.nasmas.workouts.model.MuscleGroup;
 import com.nasmas.workouts.model.Users;
-import com.nasmas.workouts.model.Workout;
-import com.nasmas.workouts.model.WorkoutType;
-import com.nasmas.workouts.service.*;
+import com.nasmas.workouts.service.SecurityService;
+import com.nasmas.workouts.service.UsersService;
+import com.nasmas.workouts.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -62,7 +60,7 @@ public class RegistrationController {
         return redirectView;
     }
 
-    @GetMapping({"/", "/index"})
+    @GetMapping({"/"})
     public String welcome(ModelMap model, @RequestParam("page") Optional<Integer> page, @RequestParam("size")
             Optional<Integer> size) {
         model = utilService.getBaseModel(model, page, size);
@@ -74,5 +72,10 @@ public class RegistrationController {
             Optional<Integer> size) {
         model = utilService.getBaseModel(model, page, size);
         return "profile";
+    }
+
+    @GetMapping("/chat")
+    public String chat() {
+        return "index";
     }
 }

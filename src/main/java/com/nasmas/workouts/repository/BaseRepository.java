@@ -11,8 +11,4 @@ public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
     T findByUniqueId(ID uniqueId);
 
     T findByUuid(UUID uuid);
-
-    void deleteByUniqueId(ID uniqueId);
-
-    void deleteByUuid(UUID uuid);
 }

@@ -1,7 +1,6 @@
 package com.nasmas.workouts.controller;
 
 import com.nasmas.workouts.model.MuscleGroup;
-import com.nasmas.workouts.model.Users;
 import com.nasmas.workouts.model.Workout;
 import com.nasmas.workouts.model.WorkoutType;
 import com.nasmas.workouts.model.local.WorkoutLocal;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +54,7 @@ public class WorkoutController {
         Workout workout = new Workout(workoutLocal, workoutType, muscleGroups, usersService.findByName(userDetails.getUsername()));
         workoutService.createWorkout(workout);
 
-        return "redirect:index";
+        return "redirect:profile";
     }
 
     @GetMapping("/workout/{uuid}")
@@ -73,14 +70,6 @@ public class WorkoutController {
     public ResponseEntity<WorkoutsListLocal> getWorkoutsByCouchUniqueId(@PathVariable Long couchId) {
         List<Workout> workoutsByCouch = workoutService.getWorkoutsList(couchId);
         WorkoutsListLocal workoutsListLocal = new WorkoutsListLocal(workoutsByCouch);
-//        model.addAttribute("workoutsByCouch", workoutsByCouch);
         return new ResponseEntity<>(workoutsListLocal, HttpStatus.OK);
     }
-
-//    @GetMapping("/workout/{uniqueId}")
-//    public String getWorkout(@PathVariable Long uniqueId, ModelMap model) {
-//
-//        model = utilService.getBaseModel(model);
-//        return "workout";
-//    }
 }

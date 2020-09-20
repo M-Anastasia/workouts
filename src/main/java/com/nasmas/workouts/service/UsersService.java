@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,17 +43,8 @@ public class UsersService implements UserDetailsService {
         return userFromDb.orElse(new Users());
     }
 
-    public Users findByUniqueId(Long uniqueId) {
-        return usersRepository.findByUniqueId(uniqueId);
-    }
-
-    public Users findByUuid(UUID uuid) {
-        return usersRepository.findByUuid(uuid);
-    }
-
     public Users findByName(String name) {
         return (Users) entityManager.createQuery("SELECT u FROM Users u WHERE u.name = '" + name + "'").getSingleResult();
-//        return (Users) entityManager.createQuery("SELECT * FROM public.users WHERE users.name = '" + name + "'").getSingleResult();
     }
 
     public List<Users> allUsers() {
@@ -71,19 +61,6 @@ public class UsersService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
         return true;
-    }
-
-    public boolean deleteUser(Long userId) {
-        if (usersRepository.findById(userId).isPresent()) {
-            usersRepository.deleteById(userId);
-            return true;
-        }
-        return false;
-    }
-
-    public List<Users> usergtList(Long idMin) {
-        return entityManager.createQuery("SELECT u FROM Users u WHERE u.uniqueId > :paramId", Users.class)
-                .setParameter("paramId", idMin).getResultList();
     }
 
     public String getSaltString() {
